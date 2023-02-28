@@ -7,6 +7,30 @@
 	<h1>Commodore .PRG files on the VIC-20</h1>
 	<h2>COMING SOMEDAY</h2>
 	<p>
-		A breakdown and guide to the Commodore .PRG file format, and creating and running them on the VIC-20.
+		A breakdown and guide to the Commodore .PRG file format, and creating and running prg files on the VIC-20.
+	</p>
+	<br></br>
+	<h3>Anatomy of a PRG file</h3>
+	<p>
+		Commodore's <code>.prg</code> filetype is a simple executable file format used in the PET,
+		VIC-20, C64, and C128. It is a simple (BASIC?) format, but the details of how a <code>.prg</code>
+		file is implemented on a particular Commodore system as well as what the file format can and
+		cannot do require some elaboration.
+	</p>
+	<p>
+		<b>HEADER + PROGRAM</b><br>
+		The gross anatomy of a Commodore <code>.prg</code> file is a two-byte header followed by 
+		the sequence of bytes that comprise the body of the program. The two-byte header designates
+		the memory location into which the program is to be loaded. This location is almost always
+		designated to be the start of the user's BASIC program RAM space. For the VIC-20 that address 
+		is 0x1001 and for the C64 0x8001 (while these systems' user RAM starts at 0x1000 and 0x8000,
+		respectively, for some reason these first bytes create issues, hence starting one byte into the
+		user RAM space). When loading the program into main memory, the system skips the header and only 
+		loads the program byte sequence into memory starting at the designated memory location.
+	</p>
+	<p>
+		Once loaded, the <code>.prg</code> program can be run by typing <code>RUN</code> into the 
+		system BASIC interpreter. The program itself can either be a BASIC program or a 6502 assembly 
+		program, or a mix (and in fact, an assembly program requires a small BASIC launch program)
 	</p>
 </body>
