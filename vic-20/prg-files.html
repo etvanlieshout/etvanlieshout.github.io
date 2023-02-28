@@ -9,14 +9,14 @@
 	<p>
 		A breakdown and guide to the Commodore .PRG file format, and creating and running prg files on the VIC-20.
 	</p>
-	<br></br>
-	<h3>Anatomy of a PRG file</h3>
 	<p>
 		Commodore's <code>.prg</code> filetype is a simple executable file format used in the PET,
 		VIC-20, C64, and C128. It is a simple (BASIC?) format, but the details of how a <code>.prg</code>
 		file is implemented on a particular Commodore system as well as what the file format can and
 		cannot do require some elaboration.
 	</p>
+	<br></br>
+	<h2>Anatomy of a PRG File</h2>
 	<p>
 		<b>HEADER + PROGRAM</b><br>
 		The gross anatomy of a Commodore <code>.prg</code> file is a two-byte header followed by 
@@ -33,4 +33,27 @@
 		system BASIC interpreter. The program itself can either be a BASIC program or a 6502 assembly 
 		program, or a mix (and in fact, an assembly program requires a small BASIC launch program)
 	</p>
+	<br></br>
+	<h2>Anatomy of an Assembly Program</h2>
+	<p>A breakdown of the hello-world.prg program produce by the simple
+	   <a href="https://etvanlieshout.github.io/vic-20/vic-20-hello-world.html">Hello World program</a>
+	   on this site.
+	</p>
+	<p><b>HEX DUMP</b><br>Hex dump of our simple hello-world.prg<br>
+	<pre>
+		<code>
+			HERE
+		</code>
+	</pre>
+	<!--PUT HEX DUMP HERE-->
+	</p>
+	<p>
+		<b>Header</b>: The first two bytes <code>01 10</code>are the header, designating the memory address into which
+		the program will be loaded. Little-Endian format. 
+	</p>
+	<p>
+		<b>BASIC Launch Program</b>: The next 14 bytes comprise a short BASIC program (tokenized) that launches and executes
+		the machine language program. <!--insert bytes here-->
+	</p>
+	<!--INSERT table breaking down the BASIC program-->
 </body>
