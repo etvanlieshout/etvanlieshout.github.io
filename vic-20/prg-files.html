@@ -42,10 +42,12 @@
 	<p><b>HEX DUMP</b><br>Hex dump of our simple hello-world.prg<br>
 	<pre>
 		<code>
-			HERE
+00000000: 0110 0d10 0a00 9e28 3431 3131 2900 0000  .......(4111)...
+00000010: 4c20 1048 454c 4c4f 2057 4f52 4c44 110d  L .HELLO WORLD..
+00000020: 00a2 008a 48bd 1210 f009 20d2 ff68 aae8  ....H..... ..h..
+00000030: 4c22 10ea                                L"..           
 		</code>
 	</pre>
-	<!--PUT HEX DUMP HERE-->
 	</p>
 	<p>
 		<b>Header</b>: The first two bytes <code>01 10</code>are the header, designating the memory address into which
@@ -53,7 +55,13 @@
 	</p>
 	<p>
 		<b>BASIC Launch Program</b>: The next 14 bytes comprise a short BASIC program (tokenized) that launches and executes
-		the machine language program. <!--insert bytes here-->
+		the machine language program.<br> <!--insert bytes here-->
+		<code>BASIC:  10 SYS 4111</code>
+                <code>BYTES:  0d10 0a00 9e28 3431 3131 2900 0000 </code>
 	</p>
 	<!--INSERT table breaking down the BASIC program-->
+	<p>
+	<b>Machine Language Program</b>: The machine language program is broken into two parts: data and instructions.
+	This is a personal design choice
+	</p>
 </body>
