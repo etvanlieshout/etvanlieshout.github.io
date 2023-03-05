@@ -5,7 +5,7 @@
 
 <body>
 	<h1>Commodore .PRG files on the VIC-20</h1>
-	<h2>COMING SOMEDAY</h2>
+	<h2>WORK IN PROGRESS</h2>
 	<p>
 		A breakdown and guide to the Commodore .PRG file format, and creating and running prg files on the VIC-20.
 	</p>
@@ -20,26 +20,35 @@
 	<p>
 		<b>HEADER + PROGRAM</b><br>
 		The gross anatomy of a Commodore <code>.prg</code> file is a two-byte header followed by 
-		the sequence of bytes that comprise the body of the program. The two-byte header designates
+		the sequence of bytes that comprise the body of the program.
+	</p>
+	<p><b>HEADER</b>: The two-byte header designates
 		the memory location into which the program is to be loaded. This location is almost always
 		designated to be the start of the user's BASIC program RAM space. For the VIC-20 that address 
-		is 0x1001 and for the C64 0x8001 (while these systems' user RAM starts at 0x1000 and 0x8000,
-		respectively, for some reason these first bytes create issues, hence starting one byte into the
-		user RAM space). When loading the program into main memory, the system skips the header and only 
+		is 0x1001 (while the system's user RAM starts at 0x1000, for some reason these first bytes 
+		create issues, hence starting one byte into the user RAM space). 
+		When loading the program into main memory, the system skips the header and only 
 		loads the program byte sequence into memory starting at the designated memory location.
+	</p>
+	<p><b>PROGRAM</b>: The program itself in the <code>.prg</code> is a tokenized BASIC program, but by
+		using the SYS command the program can contain and run 6502 machine code. Thus a <code>.prg</code>
+		 executable can be either a BASIC program, a 6502 assembly program (paired with a 1-line
+		BASIC launch program), or a mix (using SYS to move from executing BASIC code to machine code and
+		calling the kernel subroutine for parsing tokenized BASIC to move from executing machine
+		code to BASIC code).
 	</p>
 	<p>
 		Once loaded, the <code>.prg</code> program can be run by typing <code>RUN</code> into the 
-		system BASIC interpreter. The program itself can either be a BASIC program or a 6502 assembly 
-		program, or a mix (and in fact, an assembly program requires a small BASIC launch program)
+		system BASIC interpreter. <!--The program itself can either be a BASIC program or a 6502 assembly 
+		program, or a mix (and in fact, an assembly program requires a small BASIC launch program)-->
 	</p>
 	<br></br>
 	<h2>Anatomy of an Assembly Program</h2>
-	<p>A breakdown of the hello-world.prg program produced by the simple
+	<p>Here is a breakdown of the hello-world.prg program produced by the simple
 	   <a href="https://etvanlieshout.github.io/vic-20/vic-20-hello-world.html">Hello World program</a>
-	   on this site.
+	   on this site. <br>NOTE: All 2-byte/ multi-byte values (e.g., for addresses) are in Little Endian format.
 	</p>
-	<p><b>HEX DUMP</b><br>Hex dump of our simple hello-world.prg
+	<p><b>HEX DUMP</b><br>Hex dump of our simple hello-world.prg<br>
 	<pre>
 		<code>
 00000000: 0110 0d10 0a00 9e28 3431 3131 2900 0000  .......(4111)...
@@ -54,10 +63,39 @@
 		the program will be loaded. Little-Endian format. 
 	</p>
 	<p>
-		<b>BASIC Launch Program</b>: The next 14 bytes comprise a short BASIC program (tokenized) that launches and executes
-		the machine language program.<br> <!--insert bytes here-->
-		<code>BASIC:  10 SYS 4111</code> <br>
-        <code>BYTES:  0d10 0a00 9e28 3431 3131 2900 0000 </code>
+		<b>BASIC Launch Program</b>: The next 14 bytes comprise a short BASIC program (tokenized) that launches
+		the machine language portion of the program. Adding these bytes to the beginning of a 6502 assembly
+		source code file effectively inserts this program at the start of your <code>.prg</code> file. 
+		This 1-line BASIC program breaks down as follows:<br> <!--insert bytes here-->
+		<code>BASIC:  10 SYS 4111</code><br>
+                <code>BYTES:  0d10 0a00 9e28 3431 3131 2900 0000 </code>
+		<!-- TABLE -->
+		<table border="1px solid black">
+			<tr>
+				<td><code>0x0d10</code></td>
+				<td><code>0x0a00</code></td>
+				<td><code>0x9e</code></td>
+				<td><code>0x283431313129</code></td>
+				<td><code>0x00</code></td>
+				<td><code>0x0000</code></td>
+
+			</tr>
+			<tr>
+				<td><code>Pointer to addr of next BASIC line</code></td>
+				<td><code>Line number of current BASIC line</code></td>
+				<td><code>SYS command token</code></td>
+				<td><code>PETSCII characters for BASIC command argument, here: (4111)</code></td>
+				<td><code>Zero byte indicates end of current BASIC line</code></td>
+				<td><code>Two consecutive zero bytes indicate end of BASIC program</code></td>
+
+			</tr>
+		</table><br>
+		This one-line program <code>10 SYS 4111</code> tells the VIC-20 to being executing
+		6502 machine code starting at the address 4111, which is 0x100F. Consider that this BASIC
+		program begins at the address 0x1001 and comprises 14 bytes, ending at address 0x100E. This
+		means that the 6502 machine code begins as the next byte, 0x100F, which corresponds exactly
+		to our <code>SYS 4111</code> call. In this way, we have successfully switched from executing a
+		BASIC program to a 6502 machine language program.
 	</p>
 	<!--INSERT table breaking down the BASIC program-->
 	<p>
