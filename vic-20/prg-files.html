@@ -11,7 +11,7 @@
 	</p>
 	<p>
 		Commodore's <code>.prg</code> filetype is a simple executable file format used in the PET,
-		VIC-20, C64, and C128. It is a simple (BASIC?) format, but the details of how a <code>.prg</code>
+		VIC-20, C64, and C128. It is a simple (BASIC?-Ha!) format, but the details of how a <code>.prg</code>
 		file is implemented on a particular Commodore system as well as what the file format can and
 		cannot do require some elaboration.
 	</p>
@@ -25,9 +25,8 @@
 	<p><b>HEADER</b>: The two-byte header designates
 		the memory location into which the program is to be loaded. This location is almost always
 		designated to be the start of the user's BASIC program RAM space. For the VIC-20 that address 
-		is 0x1001 (while the system's user RAM starts at 0x1000, for some reason these first bytes 
-		create issues, hence starting one byte into the user RAM space). 
-		When loading the program into main memory, the system skips the header and only 
+		is 0x1001, and on the C64 it is 0x0801 (while the system's user RAM starts at 0x1000, that low byte must remain a zero-
+		value). When loading the program into main memory, the system skips the header and only 
 		loads the program byte sequence into memory starting at the designated memory location.
 	</p>
 	<p><b>PROGRAM</b>: The program itself in the <code>.prg</code> is a tokenized BASIC program, but by
@@ -97,9 +96,52 @@
 		to our <code>SYS 4111</code> call. In this way, we have successfully switched from executing a
 		BASIC program to a 6502 machine language program.
 	</p>
-	<!--INSERT table breaking down the BASIC program-->
 	<p>
 	<b>Machine Language Program</b>: The machine language program is broken into two parts: data and instructions.
-	This is a personal design choice
+	</p>
+	<pre>
+	<code>
+		;== DATA =======================================================================
+		; Hello World + carr rtrn + cursor down + NUL term
+		DATA	.BYTE	$48,$45,$4C,$4C,$4F,$20,$57,$4F,$52,$4C,$44,$11,$0D,$00
+
+		;== MAIN =======================================================================
+		MAIN
+
+			LDX #$00	; use X as offset
+		LOOP
+			TXA
+			PHA		; push X to stack
+			LDA DATA, X	; loads A w/ char
+			BEQ DONE	; If byte in A is zero, we're done string
+			JSR PRINT_CHAR
+			PLA
+			TAX		; pull X off stack
+			INX		; increment X (offset into char data)
+			JMP LOOP
+		DONE
+			NOP
+			JMP DONE	; loop to keep msg on screen; RESTORE to quit
+	</code>
+	</pre>
+	<p>
+	NOTE The 2-section layout here is merely a personal design choice. It has pros and cons.
+	Modifications to the DATA section, such as adding or removing a byte, will alter
+	any hardcoded addresses in the assembly code below. Hence, this particular layout is a
+	personal preference, not an ideal; however, in 6502 assembly, moving things around and making
+	changes necessarily can alter any hardcoded addresses, so there is no real winning it. I
+	like the consistency in sources of error if I stick to one particular schema.
+	</p>
+	<p>
+	The program itself is fairly straightforward: load the elements of an array (representing
+	the petscii code for the chars in the string) using the X register as an offset (Addressing
+	mode: Absolute,X). X is pushed and pulled from the stack at the top and bottom of each loop
+	to preserve its value across calls to the PRINT_CHAR kernel subroutine.
+	</p>
+	<p>
+	Laslty, the program ends in an infinite loop to keep the message on the screen. Press
+	RESTORE to exit/reset. The reason for not simply ended with an RTS is that upon
+	control returning to the BASIC console with RTS, the screen is cleared (at least 
+	that is what my machine does).
 	</p>
 </body>
