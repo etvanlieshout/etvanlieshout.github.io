@@ -1,0 +1,103 @@
+/* Styles for site layout and buttons */
+
+/* base styling */
+body {
+	font-family: Georgia, serif;
+	max-width: 960px;
+	margin: auto;
+	margin-top: 20px;
+}
+
+/*body {
+	font-family: Georgia, serif;
+}*/
+body {
+	color: #333;
+	background-color: #FAFAFA;
+}
+
+/* easy way to center text & headings I want centered w/ a div */
+.centered {
+	text-align: center;
+}
+
+/* Top nav bar */
+.topnav {
+	overflow: hidden;
+	background-color: #333;
+}
+
+.topnav ul {
+	list-style-type: none;
+	margin: auto;
+	padding: auto;
+}
+.topnav li {
+	display: inline;
+}
+
+.topnav a {
+	float: center;
+	color: #FAFAFA;
+	text-align: center;
+	padding: 16px 16px;
+	text-decoration: none;
+	font-size: 26px;
+}
+
+/* set current page color */
+.topnav a.active {
+	background-color: magenta;
+	color: black;
+}
+/* mouse-over behavior */
+.topnav a:hover {
+	background-color: #cfcfcf;
+	color: #333;
+}
+
+
+/* buttons */
+.vicbutton {
+  color: white;
+  background-color: blue; /* UB Blue */
+  padding: 30px 0px;
+  box-sizing: border-box;
+  border: 8px solid cyan;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px;
+  font-family: monospace;
+  margin: 0px 0px;
+  cursor: pointer;
+  width: 100%;
+}
+
+    .vicbutton:hover {
+        background-color: white;
+        color: blue;
+    }
+
+.button2 {
+  color: magenta;
+  background-color: white;
+  padding: 30px 0px;
+  box-sizing: border-box;
+  border: 8px solid magenta;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px;
+  margin: 0px 0px;
+  cursor: pointer;
+  width: 100%;
+}
+
+    .button2:hover {
+        background-color: white;
+        color: magenta;
+    }
+
