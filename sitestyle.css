@@ -3,7 +3,8 @@
 /* base styling */
 body {
 	font-family: Georgia, serif;
-	max-width: 960px;
+	min-width: 960px;
+	max-width: 1000px;
 	margin: auto;
 	margin-top: 20px;
 }
