@@ -20,9 +20,12 @@ body {
 .topnav {
 	display: flex;
 	justify-content: right;
-	align-items: center;
+	align-items: right;
 	max-width: 90vw;
 	overflow: hidden;
+	position: fixed;
+	top: 1vh;
+	right: 5vw;
 	/*background-color: #333;*/
 }
 
