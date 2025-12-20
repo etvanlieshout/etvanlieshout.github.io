@@ -19,11 +19,11 @@ body {
 /* Top nav bar */
 .topnav {
 	display: flex;
-	justify-content: center;
+	justify-content: right;
 	align-items: center;
 	max-width: 90vw;
 	overflow: hidden;
-	background-color: #333;
+	/*background-color: #333;*/
 }
 
 .topnav ul {
@@ -38,23 +38,17 @@ body {
 }
 
 .topnav a {
-	color: #FAFAFA;
-	text-align: center;
-	padding: 6px 16px;
+	text-align: right;
+	padding: 1px 6px;
 	margin: auto;
-	text-decoration: none;
-	font-size: 22px;
+	font-size: 10;
 }
 
-/* set current page color */
-.topnav a.active {
-	background-color: magenta;
-	color: black;
-}
+
 /* mouse-over behavior */
 .topnav a:hover {
-	background-color: #cfcfcf;
-	color: #333;
+	background-color: cyan;
+	color: black;
 }
 
 
