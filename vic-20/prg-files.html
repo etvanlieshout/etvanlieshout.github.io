@@ -20,10 +20,10 @@
 		A breakdown and guide to the Commodore .PRG file format, and creating and running prg files on the VIC-20.
 	</p>
 	<p>
-		Commodore's <code>.prg</code> filetype is a simple executable file format used in the PET,
-		VIC-20, C64, and C128. It is a simple (BASIC?-Ha!) format, but the details of how a <code>.prg</code>
-		file is implemented on a particular Commodore system as well as what the file format can and
-		cannot do require some elaboration.
+		Commodore's <code>.prg</code> filetype is an executable file format used in the PET,
+		VIC-20, C64, and C128. It is a simple (BASIC?-Ha!) format, but the details of how a 
+		<code>.prg</code> file is implemented on a particular Commodore system as well as 
+		what the file format can and cannot do require some elaboration.
 	</p>
 	<br></br>
 	<h2>Anatomy of a PRG File</h2>
@@ -33,23 +33,25 @@
 		the sequence of bytes that comprise the body of the program.
 	</p>
 	<p><b>HEADER</b>: The two-byte header designates
-		the memory location into which the program is to be loaded. This location is almost always
+		the memory location into which the program is to be loaded. This location is usually
 		designated to be the start of the user's BASIC program RAM space. For the VIC-20 that address 
-		is 0x1001, and on the C64 it is 0x0801 (while the system's user RAM starts at 0x1000, that low byte must remain a zero-
-		value). When loading the program into main memory, the system skips the header and only 
-		loads the program byte sequence into memory starting at the designated memory location.
+		is 0x1001, and on the C64 it is 0x0801 (while the system's user RAM starts at 0x1000 or 0x0800, 
+		that low byte must remain a zero- value). When loading the program into main memory, the system 
+		skips the header and only loads the program byte sequence into memory starting at the 
+		designated memory location.
 	</p>
-	<p><b>PROGRAM</b>: The program itself in the <code>.prg</code> is a tokenized BASIC program, but by
-		using the SYS command the program can contain and run 6502 machine code. Thus a <code>.prg</code>
-		 executable can be either a BASIC program, a 6502 assembly program (paired with a 1-line
-		BASIC launch program), or a mix (using SYS to move from executing BASIC code to machine code and
-		calling the kernel subroutine for parsing tokenized BASIC to move from executing machine
-		code to BASIC code).
+	<p><b>PROGRAM</b>: By default, the program itself in the <code>.prg</code> is assumed to be a tokenized BASIC 
+		program, but by using the SYS command the program can contain and run 6502 machine code. Thus a 
+		<code>.prg</code> executable can be either a BASIC program, a 6502 assembly program[1], or a mix[2].
 	</p>
 	<p>
-		Once loaded, the <code>.prg</code> program can be run by typing <code>RUN</code> into the 
-		system BASIC interpreter. <!--The program itself can either be a BASIC program or a 6502 assembly 
-		program, or a mix (and in fact, an assembly program requires a small BASIC launch program)-->
+		Once loaded, the <code>.prg</code> program can be run by typing <code>RUN</code> or 
+		<code>SYS [ADDR]</code> into the system BASIC interpreter. 
+	</p>
+	<p>	[1] Either: With a one-line BASIC Launch program, using <code>RUN</code> to launch; 
+		or without, using <code>SYS [START ADDR]</code> instead of <code>RUN</code> to launch.<br>
+		[2] Mixing assembly and BASIC requires a more nuanced understanding of the BASIC interpretor
+		and VIC-20 Kernal than is necessary to get into here.
 	</p>
 	<br></br>
 	<h2>Anatomy of an Assembly Program</h2>
@@ -124,7 +126,7 @@
 			PHA		; push X to stack
 			LDA DATA, X	; loads A w/ char
 			BEQ DONE	; If byte in A is zero, we're done string
-			JSR PRINT_CHAR
+			JSR $FFD2	; Addr of KERNAL CHROUT routine
 			PLA
 			TAX		; pull X off stack
 			INX		; increment X (offset into char data)
@@ -135,12 +137,14 @@
 	</code>
 	</pre>
 	<p>
-	NOTE The 2-section layout here is merely a personal design choice. It has pros and cons.
+	NOTE The 2-section layout here is merely a design choice. It has pros and cons.
 	Modifications to the DATA section, such as adding or removing a byte, will alter
-	any hardcoded addresses in the assembly code below. Hence, this particular layout is a
-	personal preference, not an ideal; however, in 6502 assembly, moving things around and making
-	changes necessarily can alter any hardcoded addresses, so there is no real winning it. I
-	like the consistency in sources of error if I stick to one particular schema.
+	any hardcoded addresses in the assembly code below; having to fetch data too far 
+	from instructions can result in more frequently crossing page boundaries. 
+	Then again, in 6502 assembly, moving things around and making changes
+	necessarily can alter any hardcoded addresses, plus having data scattered
+	throughout the file can be hard to maintain - so there is no real winning it. 
+	I like the consistency in sources of error if I stick to one particular schema.
 	</p>
 	<p>
 	The program itself is fairly straightforward: load the elements of an array (representing
@@ -156,5 +160,5 @@
 	</p>
 	<br></br>
 	<h2>WORK IN PROGRESS</h2>
-	<p>Last updated Feb 2024</p>
+	<p>Last updated Dec 2025</p>
 </body>
