@@ -1,0 +1,138 @@
+
+<title>iRiver iFP in 2026</title>
+
+<head>
+	<meta name="viewport" content="width=device-width, inital-scale=1.0">
+	<link rel="stylesheet" href="cstyle.css" />
+</head>
+
+<body>
+<div class="topnav">
+	<ul>
+		<li><a href="https://etvanlieshout.github.io/compeng.html">Back</a></li>
+		<li><a href="https://etvanlieshout.github.io/index.html">Back to Main Site</a></li>
+	</ul>
+</div>
+
+	<h1>Using an iRiver iFP-380T in 2026</h1>
+	<p>
+		Want to listen to your old iRiver iFP mp3 player? Me, too.
+		Set up the drivers and programs to manage your music files on iRiver devices. In 2026.
+	</p>
+
+	<h2>Linux</h2>
+	<p>
+		In 2005, some iRiver enthusiasts wrote an open-source iRiver iFP driver for Linux
+		and packaged it with a minimal CLI for managing the files on the device,
+		along with other useful utilities, like <code>ls</code> (list out files)
+		and <code>df</code> (disk free, gives available memory).
+	</p>
+	<p>
+		Their documentation states the driver works across the whole iFP-[1-9]XX model range.
+		I only confirmed my model series, the iFP-3XX.
+	</p>
+	<p>
+		Here is how I installed and set up their software on Debian12 and used it to put
+		new mp3s on my iRiver iFP-380T.
+	</p>
+	<p>
+		(Why Linux? Why not find the old Windows programs online and run them in
+		compatabilty mode, as suggested on a forum? Because I've never had much luck
+		with Windows compatabilty mode, and fickle Windows sometimes decides that
+		certian things are malware and refuse to run them, as with my old C&amp;C RA2 discs.
+		I want a reliable and future-proof solution, so Linux it is. Worst case,
+		I just keep an exact copy of this image and run that forever.)
+	</p>
+	<h3> Open-source iFP Driver Project webpage & Software download</h3>
+	<p><a href="https://ifp-driver.sourceforge.net/">iRiver iFP open-source driver project</a></p>
+	<p><a href="https://sourceforge.net/projects/ifp-driver/">iRiver iFP open-source driver sourceforge download</a></p>
+
+	<h3>Download & install iFP driver</h3>
+		<ol>
+			<li><p>
+				Download the compressed folder from the Sourceforge download. Extract it wherever
+				makes sense to you. I just put it in my home directory (aka folder).
+			</p></li>
+			<li><p>
+					Open a terminal in the newly extracted iFP driver folder and run the <code>configure</code>
+					program. This will tell you if your system has all the necessary programs and packages
+					installed.</br></br><code>$ ./configure</code>
+			</p></li>
+			<li><p>
+					Install any missing dependencies, as reported by <code> configure </code>.
+					If you aren't sure how to install a dependency, google it! Almost invariably,
+					the procedure is
+					</br></br><code>$ sudo apt install [dependency-pkg]</code></br></br>
+					Note that for the <code>libusb</code> dependency, I needed to install
+					the package <code>libusb-dev</code> and NOT <code>libusb-1.0-0-dev</code>.
+			</p></li>
+					Install the iPF drivers. The README specifies that following <code>configure</code>
+					completing sucessfully, you should run 
+					</br><pre><code>$ make</br>$ sudo make install</code></pre>
+					The nonroot.sh script did not seem to work or be necessary.
+			</p></li>
+			<li><p>
+					Add the ifp executable to PATH if desired, or run from directory / filename.
+			</p></li>
+		</ol>
+		</br>
+
+		<h3>Run the iFP Line driver interface</h3>
+		<ol>
+			<li><p>
+					Plug in your iRiver device (remember to turn it on), and then run</br></br>
+					<code>$ sudo ifp ls</code></br></br>to list contents of the device's root
+					directory and thereby confirm your connection. You can also run the
+					<code> ifp ls</code> command with a directory argument at the end.
+					Note: because ifp accesses usb deivces, you need to run it with sudo.
+			</p></li>
+			<li><p>
+					To see a list of commands, run </br></br><code> $ ifp -h</code></br></br>
+					 or view the <code> README</code>.
+			</p></li>
+			<li><p>
+					Load songs to your iRiver device using the <code> upload</code> command:
+					</br></br><code>$ sudo ifp upload path/to/songfile.mp3 iriver/destination/path/song.mp3</code></br></br>
+					You can only upload one song at a time this way.
+			</p></li>
+			<li><p>
+					Download recordings and song files from your iRiver device to your
+					computer using the <code> download</code> command. It works exactly like
+					the upload command:
+					</br></br><code>$ sudo ifp download iriver/path/to/songfile.mp3 destination/path/song.mp3</code></br>
+			</p></li>
+			<li><p>
+					You can check the available free space on your iRiver devices with <code>df</code>:
+					</br></br><code> $ sudo ifp df</code></br>
+			</p></li>
+			<li><p>
+					Manage iRiver device files with:
+						<ul>
+							<li><p>
+									<code> rm </code>: Delete files with <code> rm </code>.
+									</br></br><code>$ sudo ifp rm iRiver/path/to/song.mp3</code></br></br>
+							</li></p>
+							<li><p>
+									<code> rmdir </code>: Delete directories with <code> rmdir </code>.
+									</br></br><code>$ sudo ifp rmdir iRiver/path/to/directory</code></br></br>
+							</li></p>
+							<li><p>
+									<code> mkdir </code>: Create directories on your
+									iRiver (to keep your music organized!) with <code> mkdir </code>.
+									</br></br><code>$ sudo ifp mkdir iRiver/path/to/newfolder</code></br></br>
+						</ul>
+			</p></li>
+			<li><p>
+					The project <code> README</code> indicates you can upload or download whole
+					directories, instead of individual songs, but I have not tried this yet.
+			</p></li>
+		</ol>
+		<p>
+					Non-Command Line Interfaces are available, but I have not tried them. The project
+					<code> README</code> contains information on installing one or two of
+					these interfaces. The project webpage, above, also has more information
+					on using these non-CLI interfaces.
+		</p>
+		</br>
+		</br>
+		</br>

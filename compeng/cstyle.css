@@ -1,0 +1,107 @@
+/* Styles for commodore guide site layout and buttons */
+
+/* base styling */
+body {
+	/* font-family: Georgia, serif; */
+	max-width: 90vw;
+	margin: auto;
+	margin-top: 20px;
+}
+
+code {
+	color: black;
+  /*background-color: lightgrey;*/
+	background-color: #F0F0F0;
+}
+
+
+/* easy way to center text & headings I want centered w/ a div */
+.centered {
+	text-align: center;
+}
+
+/* nothing below used in commodore area at the moment */
+
+/* Top nav bar */
+.topnav {
+	display: flex;
+	justify-content: right;
+	align-items: right;
+	max-width: 90vw;
+	overflow: hidden;
+	position: fixed;
+	top: 1vh;
+	right: 5vw;
+	/*background-color: #333;*/
+}
+
+.topnav ul {
+	list-style-type: none;
+	margin: auto;
+	padding: auto;
+}
+.topnav li {
+	display: inline-block;
+	margin: auto;
+	padding: auto;
+}
+
+.topnav a {
+	text-align: right;
+	padding: 1px 6px;
+	margin: auto;
+	font-size: 10;
+}
+
+
+/* mouse-over behavior */
+.topnav a:hover {
+	background-color: cyan;
+	color: black;
+}
+
+
+/* buttons */
+.vicbutton {
+  color: white;
+  background-color: blue; /* UB Blue */
+  padding: 30px 0px;
+  box-sizing: border-box;
+  border: 8px solid cyan;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px;
+  font-family: monospace;
+  margin: 0px 0px;
+  cursor: pointer;
+  width: 100%;
+}
+
+    .vicbutton:hover {
+        background-color: white;
+        color: blue;
+    }
+
+.button2 {
+  color: magenta;
+  background-color: white;
+  padding: 30px 0px;
+  box-sizing: border-box;
+  border: 8px solid magenta;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px;
+  margin: 0px 0px;
+  cursor: pointer;
+  width: 100%;
+}
+
+    .button2:hover {
+        background-color: white;
+        color: magenta;
+    }
+
