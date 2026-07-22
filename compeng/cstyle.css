@@ -7,6 +7,10 @@ body {
 	margin: auto;
 	margin-top: 20px;
 }
+body {
+	color: #333;
+	background-color: #FAFAFA;
+}
 
 code {
 	color: black;
